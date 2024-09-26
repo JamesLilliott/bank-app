@@ -2,7 +2,8 @@ namespace Domain;
 
 public class TransactionService
 {
-    private Dictionary<string, decimal> _bank = new Dictionary<string, decimal>();
+    //private Dictionary<string, decimal> _bank = new Dictionary<string, decimal>();
+    private List<Transaction> _transactionLog = new List<Transaction>();
     
     public DataResult<bool> Deposit(string accountNumber, decimal amount)
     {
@@ -11,18 +12,24 @@ public class TransactionService
             return Result.Failure<bool>("Amount can not be negative");
         }
         
-        var balance = Balance(accountNumber);
-        
-        _bank[accountNumber] = balance + amount;
+        _transactionLog.Add(new Transaction(accountNumber, TransactionType.Credit, amount, TransactionSource.Deposit));
 
         return Result.Success(true);
     }
 
     public decimal Balance(string accountNumber)
     {
-        var balance = _bank.GetValueOrDefault(accountNumber);
+        var creditAmount = _transactionLog
+            .Where(x => x.AccountId == accountNumber)
+            .Where(x => x.Type == TransactionType.Credit)
+            .Sum(x => x.Amount);
         
-        return balance;
+        var debitAmount = _transactionLog
+            .Where(x => x.AccountId == accountNumber)
+            .Where(x => x.Type == TransactionType.Debit)
+            .Sum(x => x.Amount);
+
+        return creditAmount - debitAmount;
     }
 
     public DataResult<decimal> Withdraw(string accountNumber, decimal amount)
@@ -38,7 +45,7 @@ public class TransactionService
             return Result.Failure<decimal>("Not enough money in account");
         }
         
-        _bank[accountNumber] = balance - amount;
+        _transactionLog.Add(new Transaction(accountNumber, TransactionType.Debit, amount));
         
         return Result.Success(amount);
     }
@@ -55,6 +62,8 @@ public class TransactionService
         {
             return Result.Failure<bool>(withdrawalResult.ErrorMessage ?? "Can not send more money than balance");
         }
+        
+        _transactionLog.Add(new Transaction(from, TransactionType.Debit, amount, TransactionSource.ReceiveMoney));
         
         return Deposit(to, withdrawalResult.Value);
     }
