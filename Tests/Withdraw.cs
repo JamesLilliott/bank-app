@@ -1,4 +1,5 @@
 using Domain;
+using InMemoryRepository;
 
 namespace Tests;
 
@@ -10,7 +11,7 @@ public class Withdraw
         var accountNumber1 = "123";
         var amount1 = 20.10m;
         
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
         transactionService.Deposit(accountNumber1, amount1);
         var withdrawResult = transactionService.Withdraw(accountNumber1, amount1);
@@ -26,7 +27,7 @@ public class Withdraw
         var amount1 = 20.10m;
         var amount2 = 14.88m;
         
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
         transactionService.Deposit(accountNumber1, amount1);
         var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
@@ -44,7 +45,7 @@ public class Withdraw
         var accountNumber1 = "123";
         var amount1 = 20.10m;
         
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
         var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
         
         Assert.That(withdrawResult1.Failed(), Is.EqualTo(true));
@@ -56,7 +57,7 @@ public class Withdraw
         var accountNumber1 = "123";
         var amount1 = 20.10m;
         
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
         transactionService.Deposit(accountNumber1, amount1);
         
         var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
@@ -72,7 +73,7 @@ public class Withdraw
         var accountNumber1 = "123";
         var amount1 = -20.10m;
         
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
         
         var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
         

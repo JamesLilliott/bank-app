@@ -1,4 +1,5 @@
 using Domain;
+using InMemoryRepository;
 
 namespace Tests;
 
@@ -9,7 +10,7 @@ public class Balance
     {
         var account1 = "123";
         
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
         var balance = transactionService.Balance(account1);
         
@@ -22,7 +23,7 @@ public class Balance
         var account1 = "123";
         var amount1 = 10.99m;
         
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
         transactionService.Deposit(account1, amount1);
         var balance = transactionService.Balance(account1);

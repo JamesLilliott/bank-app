@@ -1,10 +1,9 @@
 namespace Domain;
 
-public class TransactionService
+public class TransactionService(ITransactionRepository transactionRepository)
 {
-    //private Dictionary<string, decimal> _bank = new Dictionary<string, decimal>();
-    private List<Transaction> _transactionLog = new List<Transaction>();
-    
+    private ITransactionRepository _transactionRepository = transactionRepository;
+
     public DataResult<bool> Deposit(string accountNumber, decimal amount)
     {
         if (amount < 0.00m)
@@ -12,19 +11,19 @@ public class TransactionService
             return Result.Failure<bool>("Amount can not be negative");
         }
         
-        _transactionLog.Add(new Transaction(accountNumber, TransactionType.Credit, amount, TransactionSource.Deposit));
+        _transactionRepository.Add(new Transaction(accountNumber, TransactionType.Credit, amount, TransactionSource.Deposit));
 
         return Result.Success(true);
     }
 
     public decimal Balance(string accountNumber)
     {
-        var creditAmount = _transactionLog
+        var creditAmount = _transactionRepository.Get(accountNumber)
             .Where(x => x.AccountId == accountNumber)
             .Where(x => x.Type == TransactionType.Credit)
             .Sum(x => x.Amount);
         
-        var debitAmount = _transactionLog
+        var debitAmount = _transactionRepository.Get(accountNumber)
             .Where(x => x.AccountId == accountNumber)
             .Where(x => x.Type == TransactionType.Debit)
             .Sum(x => x.Amount);
@@ -45,7 +44,7 @@ public class TransactionService
             return Result.Failure<decimal>("Not enough money in account");
         }
         
-        _transactionLog.Add(new Transaction(accountNumber, TransactionType.Debit, amount));
+        _transactionRepository.Add(new Transaction(accountNumber, TransactionType.Debit, amount));
         
         return Result.Success(amount);
     }
@@ -63,7 +62,7 @@ public class TransactionService
             return Result.Failure<bool>(withdrawalResult.ErrorMessage ?? "Can not send more money than balance");
         }
         
-        _transactionLog.Add(new Transaction(from, TransactionType.Debit, amount, TransactionSource.ReceiveMoney));
+        _transactionRepository.Add(new Transaction(from, TransactionType.Debit, amount, TransactionSource.ReceiveMoney));
         
         return Deposit(to, withdrawalResult.Value);
     }

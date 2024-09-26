@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\InMemoryRepository\InMemoryRepository.csproj" />
     </ItemGroup>
 
 </Project>

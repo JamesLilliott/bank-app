@@ -1,4 +1,5 @@
 using Domain;
+using InMemoryRepository;
 
 namespace Tests;
 
@@ -14,7 +15,7 @@ public class Tests
     {
         var accountNumber = "123";
         var amount = -50;
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
         var depositResult = transactionService.Deposit(accountNumber, amount);
         
@@ -26,7 +27,7 @@ public class Tests
     {
         var accountNumber = "123";
         var amount = 60.10m;
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
         transactionService.Deposit(accountNumber, amount);
 
@@ -42,7 +43,7 @@ public class Tests
         var accountNumber2 = "456";
         var amount1 = 20.10m;
         var amount2 = 13.99m;
-        var transactionService = new TransactionService();
+        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
         transactionService.Deposit(accountNumber1, amount1);
         transactionService.Deposit(accountNumber2, amount2);
