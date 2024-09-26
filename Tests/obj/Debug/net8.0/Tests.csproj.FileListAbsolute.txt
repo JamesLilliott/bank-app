@@ -99,3 +99,5 @@
 /Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/Tests/obj/Debug/net8.0/Tests.pdb
 /Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/Tests/obj/Debug/net8.0/Tests.genruntimeconfig.cache
 /Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/Tests/obj/Debug/net8.0/ref/Tests.dll
+/Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/Tests/bin/Debug/net8.0/InMemoryRepository.dll
+/Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/Tests/bin/Debug/net8.0/InMemoryRepository.pdb

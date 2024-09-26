@@ -387,6 +387,19 @@
         "runtime": {
           "bin/placeholder/Domain.dll": {}
         }
+      },
+      "InMemoryRepository/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/InMemoryRepository.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/InMemoryRepository.dll": {}
+        }
       }
     }
   },
@@ -985,11 +998,17 @@
       "type": "project",
       "path": "../Domain/Domain.csproj",
       "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "InMemoryRepository/1.0.0": {
+      "type": "project",
+      "path": "../InMemoryRepository/InMemoryRepository.csproj",
+      "msbuildProject": "../InMemoryRepository/InMemoryRepository.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Domain >= 1.0.0",
+      "InMemoryRepository >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.8.0",
       "NUnit >= 3.14.0",
       "NUnit.Analyzers >= 3.9.0",
@@ -1024,6 +1043,9 @@
           "projectReferences": {
             "/Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/Domain/Domain.csproj": {
               "projectPath": "/Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/Domain/Domain.csproj"
+            },
+            "/Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/InMemoryRepository/InMemoryRepository.csproj": {
+              "projectPath": "/Users/jameslilliott/Projects/c#/TransactionApp/TransactionApp/InMemoryRepository/InMemoryRepository.csproj"
             }
           }
         }
