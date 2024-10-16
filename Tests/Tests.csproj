@@ -23,7 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\InMemoryRepository\InMemoryRepository.csproj" />
       <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
     </ItemGroup>
 

@@ -1,5 +1,7 @@
 using Domain;
-using InMemoryRepository;
+using Microsoft.EntityFrameworkCore;
+using SqlRepository;
+using AppContext = SqlRepository.AppContext;
 
 namespace Tests;
 
@@ -10,7 +12,12 @@ public class Balance
     [SetUp]
     public void Setup()
     {
-        ITransactionRepository transactionRepo = new InMemoryTransactionRepository();
+        var testName = $"{TestContext.CurrentContext.Test.ClassName}-{TestContext.CurrentContext.Test.Name}";
+        var context = new AppContext(new DbContextOptionsBuilder<AppContext>()
+            .UseInMemoryDatabase($"{testName}")
+            .Options);
+        
+        ITransactionRepository transactionRepo = new SqlTransactionRepository(context);
         _transactionService = new TransactionService(transactionRepo);
     }
     
