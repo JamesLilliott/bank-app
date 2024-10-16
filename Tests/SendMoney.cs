@@ -5,6 +5,15 @@ namespace Tests;
 
 public class SendMoney
 {
+    private TransactionService _transactionService;
+
+    [SetUp]
+    public void Setup()
+    {
+        ITransactionRepository transactionRepo = new InMemoryTransactionRepository();
+        _transactionService = new TransactionService(transactionRepo);
+    }
+    
     [Test]
     public void CanSendMoneyToAccount()
     {
@@ -12,11 +21,9 @@ public class SendMoney
         var receiverAccount = "456";
         var amount = 45.99m;
         
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
-
-        transactionService.Deposit(payerAccount, amount);
-        var sendResult = transactionService.Send(payerAccount, receiverAccount, amount);
-        var balance = transactionService.Balance(receiverAccount);
+        _transactionService.Deposit(payerAccount, amount);
+        var sendResult = _transactionService.Send(payerAccount, receiverAccount, amount);
+        var balance = _transactionService.Balance(receiverAccount);
         
         Assert.That(sendResult.Failed(), Is.False);
         Assert.That(balance, Is.EqualTo(amount));
@@ -29,11 +36,9 @@ public class SendMoney
         var receiverAccount = "456";
         var depositAmount = 20.99m;
         var sendAmount = 45.00m;
-        
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
-        transactionService.Deposit(payerAccount, depositAmount);
-        var sendResult = transactionService.Send(payerAccount, receiverAccount, sendAmount);
+        _transactionService.Deposit(payerAccount, depositAmount);
+        var sendResult = _transactionService.Send(payerAccount, receiverAccount, sendAmount);
         
         Assert.That(sendResult.Failed(), Is.True);
     }
@@ -44,11 +49,9 @@ public class SendMoney
         var payerAccount = "123";
         var receiverAccount = "456";
         var amount = -20.99m;
-        
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
-        transactionService.Deposit(payerAccount, amount);
-        var sendResult = transactionService.Send(payerAccount, receiverAccount, amount);
+        _transactionService.Deposit(payerAccount, amount);
+        var sendResult = _transactionService.Send(payerAccount, receiverAccount, amount);
         
         Assert.That(sendResult.Failed(), Is.True);
     }

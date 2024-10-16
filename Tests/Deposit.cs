@@ -5,9 +5,13 @@ namespace Tests;
 
 public class Tests
 {
+    private TransactionService _transactionService;
+    
     [SetUp]
     public void Setup()
     {
+        ITransactionRepository transactionRepo = new InMemoryTransactionRepository();
+        _transactionService = new TransactionService(transactionRepo);
     }
 
     [Test]
@@ -15,9 +19,8 @@ public class Tests
     {
         var accountNumber = "123";
         var amount = -50;
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
-        var depositResult = transactionService.Deposit(accountNumber, amount);
+        var depositResult = _transactionService.Deposit(accountNumber, amount);
         
         Assert.True(depositResult.Failed());
     }
@@ -27,11 +30,10 @@ public class Tests
     {
         var accountNumber = "123";
         var amount = 60.10m;
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
-        transactionService.Deposit(accountNumber, amount);
+        _transactionService.Deposit(accountNumber, amount);
 
-        var balanceResult = transactionService.Balance(accountNumber);
+        var balanceResult = _transactionService.Balance(accountNumber);
         
         Assert.That(balanceResult, Is.EqualTo(amount));
     }
@@ -43,13 +45,12 @@ public class Tests
         var accountNumber2 = "456";
         var amount1 = 20.10m;
         var amount2 = 13.99m;
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
-        transactionService.Deposit(accountNumber1, amount1);
-        transactionService.Deposit(accountNumber2, amount2);
+        _transactionService.Deposit(accountNumber1, amount1);
+        _transactionService.Deposit(accountNumber2, amount2);
 
-        var balanceResult1 = transactionService.Balance(accountNumber1);
-        var balanceResult2 = transactionService.Balance(accountNumber2);
+        var balanceResult1 = _transactionService.Balance(accountNumber1);
+        var balanceResult2 = _transactionService.Balance(accountNumber2);
         
         Assert.That(balanceResult1, Is.EqualTo(amount1));
         Assert.That(balanceResult2, Is.EqualTo(amount2));

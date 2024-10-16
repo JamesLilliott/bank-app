@@ -5,16 +5,23 @@ namespace Tests;
 
 public class Withdraw
 {
-        [Test]
+    private TransactionService _transactionService;
+
+    [SetUp]
+    public void Setup()
+    {
+        ITransactionRepository transactionRepo = new InMemoryTransactionRepository();
+        _transactionService = new TransactionService(transactionRepo);
+    }
+    
+    [Test]
     public void CanWithdrawMoney()
     {
         var accountNumber1 = "123";
         var amount1 = 20.10m;
-        
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
-        transactionService.Deposit(accountNumber1, amount1);
-        var withdrawResult = transactionService.Withdraw(accountNumber1, amount1);
+        _transactionService.Deposit(accountNumber1, amount1);
+        var withdrawResult = _transactionService.Withdraw(accountNumber1, amount1);
         
         Assert.That(withdrawResult.Value, Is.EqualTo(amount1));
     }
@@ -26,14 +33,12 @@ public class Withdraw
         var accountNumber2 = "456";
         var amount1 = 20.10m;
         var amount2 = 14.88m;
-        
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
 
-        transactionService.Deposit(accountNumber1, amount1);
-        var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
+        _transactionService.Deposit(accountNumber1, amount1);
+        var withdrawResult1 = _transactionService.Withdraw(accountNumber1, amount1);
         
-        transactionService.Deposit(accountNumber2, amount2);
-        var withdrawResult2 = transactionService.Withdraw(accountNumber2, amount2);
+        _transactionService.Deposit(accountNumber2, amount2);
+        var withdrawResult2 = _transactionService.Withdraw(accountNumber2, amount2);
         
         Assert.That(withdrawResult1.Value, Is.EqualTo(amount1));
         Assert.That(withdrawResult2.Value, Is.EqualTo(amount2));
@@ -45,8 +50,7 @@ public class Withdraw
         var accountNumber1 = "123";
         var amount1 = 20.10m;
         
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
-        var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
+        var withdrawResult1 = _transactionService.Withdraw(accountNumber1, amount1);
         
         Assert.That(withdrawResult1.Failed(), Is.EqualTo(true));
     }
@@ -57,11 +61,10 @@ public class Withdraw
         var accountNumber1 = "123";
         var amount1 = 20.10m;
         
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
-        transactionService.Deposit(accountNumber1, amount1);
+        _transactionService.Deposit(accountNumber1, amount1);
         
-        var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
-        var withdrawResult2 = transactionService.Withdraw(accountNumber1, amount1);
+        var withdrawResult1 = _transactionService.Withdraw(accountNumber1, amount1);
+        var withdrawResult2 = _transactionService.Withdraw(accountNumber1, amount1);
         
         Assert.That(withdrawResult1.Value, Is.EqualTo(amount1));
         Assert.That(withdrawResult2.Failed(), Is.EqualTo(true));
@@ -73,9 +76,7 @@ public class Withdraw
         var accountNumber1 = "123";
         var amount1 = -20.10m;
         
-        var transactionService = new TransactionService(new InMemoryTransactionRepository());
-        
-        var withdrawResult1 = transactionService.Withdraw(accountNumber1, amount1);
+        var withdrawResult1 = _transactionService.Withdraw(accountNumber1, amount1);
         
         Assert.That(withdrawResult1.Failed(), Is.EqualTo(true));
     }
