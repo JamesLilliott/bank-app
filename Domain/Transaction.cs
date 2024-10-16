@@ -2,6 +2,8 @@ namespace Domain;
 
 public class Transaction(string accountId, TransactionType type, decimal amount)
 {
+    public string TransactionId { get; set; }
+    
     public string AccountId { get; set; } = accountId;
 
     public TransactionType Type { get; set; } = type;
