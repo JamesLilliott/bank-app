@@ -1,6 +1,6 @@
 /Domain/bin/
 /Domain/obj/
-/InMemoryRepository/bin/
-/InMemoryRepository/obj/
+/SqlRepository/bin/
+/SqlRepository/obj/
 /Tests/bin/
 /Tests/obj/
